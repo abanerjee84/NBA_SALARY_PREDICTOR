@@ -31,14 +31,22 @@ from sklearn.linear_model import Lasso
 import requests
 from bs4 import BeautifulSoup
 import lxml
+from lxml import html
 import string
+import time
 
+
+### GEt YEAR
+strings = time.strftime("%Y,%m,%d,%H,%M,%S")
+t = strings.split(',')
+numbers = [ int(x) for x in t ]
+year=numbers[0]
 
 print("App Starting/Gathering Data....Please Wait until URL provided")
 
 
 #This takes the player stats data, and creates a list of a lists, where a list is all the values of a player
-url = 'https://www.basketball-reference.com/leagues/NBA_2019_per_game.html'
+url = 'https://www.basketball-reference.com/leagues/NBA_'+str(year)+'_per_game.html'
 response = requests.get(url)
 page = response.text
 soup = BeautifulSoup(page,"lxml")
@@ -99,6 +107,10 @@ salaries_url = 'https://www.basketball-reference.com/contracts/players.html'
 salaries_response = requests.get(salaries_url)
 page = salaries_response.text
 soup = BeautifulSoup(page,"lxml")
+tree = lxml.html.fromstring(page)
+i_need_element = tree.xpath('//*[@id="content"]/div[2]/p[1]/text()[1]')
+market_cap=i_need_element[0].split(" ")[1][1:].replace(",","")
+market_cap=int(market_cap)
 salaries = []
 table_body=soup.find_all('tbody')
 for tb in table_body:
@@ -230,6 +242,8 @@ make_per = lambda x: "{:,.2f}%".format(x)
 show_df['Predicted_Salary']=show_df['Predicted_Salary'].apply(make_float)
 show_df['salary']=show_df['salary'].apply(make_float)
 show_df['EPP']=show_df['EPP'].apply(make_per)
+market_cap=float(market_cap)
+market_cap=make_float(market_cap)
 
 ## Styling
 def color_negative_red(value):
@@ -249,14 +263,24 @@ def color_negative_red(value):
 
   return 'color: %s' % color
 
+
 show_df.style.applymap(color_negative_red, subset=['salary','Predicted_Salary'])
+
+### subplots
+## money spend by team
+team_sals = nba_df.groupby("Tm").agg(np.sum).sort_values('salary', ascending=False).reset_index()
+fig, ax = plt.subplots(figsize=(12,5))
+sns.barplot(x=team_sals.sqrty, y=team_sals.Tm, ax=ax)
+ax.set_xlabel('Salary Total for this year')
+ax.set_title('Salary Comparision by Team')
+plt.savefig('./static/infographics/avgsal.png')
 
 app = Flask(__name__)
 @app.route('/', methods=("POST", "GET"))
 def html_table():
 
     # return render_template('pred_table.html',  tables=[show_df.to_html(classes='data')], titles=show_df.columns.values)
-    return render_template("pred_table.html", column_names=show_df.columns.values, row_data=list(show_df.values.tolist()), zip=zip)
+    return render_template("pred_table.html", market=market_cap,column_names=show_df.columns.values, row_data=list(show_df.values.tolist()), zip=zip)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
@@ -281,4 +305,3 @@ if __name__ == '__main__':
 # # main driver function
 # if __name__ == '__main__':
 #     app.run()
-
