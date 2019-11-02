@@ -268,12 +268,12 @@ show_df.style.applymap(color_negative_red, subset=['salary','Predicted_Salary'])
 
 ### subplots
 ## money spend by team
-# team_sals = nba_df.groupby("Tm").agg(np.sum).sort_values('salary', ascending=False).reset_index()
-# fig, ax = plt.subplots(figsize=(12,5))
-# sns.barplot(x=team_sals.sqrty, y=team_sals.Tm, ax=ax)
-# ax.set_xlabel('Salary Total for this year')
-# ax.set_title('Salary Comparision by Team')
-# plt.savefig('./static/infographics/avgsal.png')
+team_sals = nba_df.groupby("Tm").agg(np.sum).sort_values('salary', ascending=False).reset_index()
+fig, ax = plt.subplots(figsize=(12,5))
+sns.barplot(x=team_sals.sqrty, y=team_sals.Tm, ax=ax)
+ax.set_xlabel('Salary Total for this year')
+ax.set_title('Salary Comparision by Team')
+plt.savefig('./static/infographics/avgsal.png')
 
 app = Flask(__name__)
 @app.route('/', methods=("POST", "GET"))
