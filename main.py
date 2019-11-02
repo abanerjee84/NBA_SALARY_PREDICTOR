@@ -171,11 +171,11 @@ for x in results:
 for x in output:
     nba_df.loc[nba_df['Tm'] == x, "playoff"] = 1
 #save my dataset as a csv file
-nba_df.to_csv('nba_FINALDATA.csv', sep=',')
+# nba_df.to_csv('nba_FINALDATA.csv', sep=',')
 ## salary as sqrt(y)
 nba_df['sqrty'] = np.sqrt(nba_df.salary)
 #save my dataset as a csv file
-nba_df.to_csv('nba_FINALDATA_ytransform.csv', sep=',')
+# nba_df.to_csv('nba_FINALDATA_ytransform.csv', sep=',')
 
 ### REGRESSION MODEL ####
 
