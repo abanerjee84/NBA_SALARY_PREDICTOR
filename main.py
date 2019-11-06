@@ -284,7 +284,7 @@ def html_table():
     return render_template("pred_table.html", market=market_cap,column_names=show_df.columns.values, row_data=list(show_df.values.tolist()), zip=zip)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=800)
+    app.run(host='0.0.0.0',port=8000)
 
 # app = Flask(__name__)
 #
