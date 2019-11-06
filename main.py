@@ -276,7 +276,7 @@ show_df.style.applymap(color_negative_red, subset=['salary','Predicted_Salary'])
 # plt.savefig('./static/infographics/avgsal.png')
 
 app = Flask(__name__)
-# app._static_folder = '\static'
+app._static_folder = '\static'
 @app.route('/', methods=("POST", "GET"))
 def html_table():
 
