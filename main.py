@@ -273,7 +273,7 @@ fig, ax = plt.subplots(figsize=(12,5))
 sns.barplot(x=team_sals.sqrty, y=team_sals.Tm, ax=ax)
 ax.set_xlabel('Salary Total for this year')
 ax.set_title('Salary Comparision by Team')
-plt.savefig('./static/infographics/avgsal.png')
+# plt.savefig('./static/infographics/avgsal.png')
 
 app = Flask(__name__)
 # app._static_folder = '\static'
