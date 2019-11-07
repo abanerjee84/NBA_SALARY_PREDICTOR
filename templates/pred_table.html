@@ -17,6 +17,11 @@
 
 <head>
 <style>
+
+.imgContainer{
+    float:left;
+}
+
 #players {
   font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   border-collapse: collapse;
@@ -44,7 +49,55 @@
 
 <body>
 <h1>Salary Ceiling : {{market}}</h1>
-<img src="/static/avgsal.png" alt="Avg Salary">
+
+<div class="image123">
+    <div class="imgContainer">
+        <img src="/static/totepp.png" height="400" width="550"/>
+
+    </div>
+    <div class="imgContainer">
+        <img src="/static/toteppworst.png" height="400" width="550"/>
+
+    </div>
+    <div class="imgContainer">
+        <img src="/static/top5.png"/ height="400" width="550"/>
+
+    </div>
+    <div class="imgContainer">
+         <img src="/static/avgsal.png"/ height="400" width="750"/>
+
+    </div>
+    <div class="imgContainer">
+         <img src="/static/position.png"/ height="400" width="750"/>
+
+    </div>
+</div>
+
+
+
+<div class="form-sort" style="
+    margin-left: 70px;
+    color: black;
+    display: inline-block;">
+
+<form method="post">
+  <label>
+    <div>Sort By</div>
+    <select name="activity">
+      {% for activity in activities %}
+          <option value="{{ activity }}">{{ activity }}</option>
+      {% endfor %}
+    </select>
+    <select name="type">
+      {% for type in type %}
+          <option value="{{ type }}">{{ type }}</option>
+      {% endfor %}
+    </select>
+  </label>
+  <input type="submit">
+</form>
+</div>
+
 <table id="players">
     <tr>
         {% for col in column_names %}
