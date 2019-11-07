@@ -339,7 +339,7 @@ def gather_data():
     # sns.barplot(x=result.EPP, y=result.Tm, ax=ax)
     ax.set_xlabel('Team')
     ax.set_ylabel('Total EPP')
-    ax.set_title('Top 5 Most Profitable Teams.')
+    ax.set_title('Top 5 Teams with Best Contracts.')
     plt.xticks(index + bar_width-0.2, (tuple(underpaid['Tm'])))
     plt.savefig('./static/totepp.png')
 
