@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request,Response
+from flask import send_file
 import pandas as pd
 import numpy as np
 import statsmodels.api as sm
@@ -380,7 +381,7 @@ def gather_data():
     plt.savefig('./static/position.png')
 
 
-    return nba_df,y_pred,player_pred,market_cap
+    return nba_df,y_pred,player_pred,market_cap,year
 
 
 
@@ -392,14 +393,15 @@ nba_df=0
 y_pred=0
 player_pred=0
 market_cap=0
+year=0
 app = Flask(__name__,static_url_path='/static')
 app.config["CACHE_TYPE"] = "null"
 @app.route('/' , methods=['GET', 'POST'])
 def html_table():
-    global flag,nba_df,y_pred,player_pred,market_cap
+    global flag,nba_df,y_pred,player_pred,market_cap,year
 
-    if flag==0:
-        nba_df,y_pred,player_pred,market_cap=gather_data()
+    if flag==0 or np.random.rand()<0.01:
+        nba_df,y_pred,player_pred,market_cap,year=gather_data()
         market_cap=float(market_cap)
         make_float = lambda x: "${:,.2f}".format(x)
         market_cap=make_float(market_cap)
@@ -415,15 +417,10 @@ def html_table():
     make_per = lambda x: "{:,.2f}%".format(x)
 
 
-
-
-
-    select = request.form.get('activity')
-    ty=request.form.get('type')
-    dwn=request.form.get('download')
-    srt=request.form.get('sort')
-    ss=str(select) # just to see what select is
-    if srt=='Sort':
+    if 'sort' in request.form:
+        select = request.form.get('activity')
+        ty=request.form.get('type')
+        ss=str(select) # just to see what select is
         if ss=="Team":
             if ty=='Lowest First':
                 show_df.sort_values(by='Tm', ascending=True,inplace=True)
@@ -444,14 +441,22 @@ def html_table():
                 show_df.sort_values(by='EPP', ascending=True,inplace=True)
             else:
                 show_df.sort_values(by='EPP', ascending=False,inplace=True)
-    if dwn=='Download as CSV':
-        print("admasdasjkd")
+    elif 'down' in request.form:
+            file = open('./static/data_csv.csv','r')
+            returnfile = file.read().encode('utf-8-sig')
+            file.close()
+            return Response(returnfile,
+                mimetype="text/csv",
+                headers={"Content-disposition":
+                         "attachment; filename=data_csv.csv"})
+
 
     show_df['Predicted_Salary']=show_df['Predicted_Salary'].apply(make_float)
     show_df['salary']=show_df['salary'].apply(make_float)
     show_df['EPP']=show_df['EPP'].apply(make_per)
-    # return render_template('pred_table.html',  tables=[show_df.to_html(classes='data')], titles=show_df.columns.values)
-    return render_template("pred_table.html", type=type,activities=activities,market=market_cap,column_names=show_df.columns.values, row_data=list(show_df.values.tolist()), zip=zip)
+    show_df.to_csv('./static/data_csv.csv',encoding='utf-8-sig')
+    yr="    ("+str(year)+"-"+str(year+1)+")"
+    return render_template("pred_table.html", year=yr,type=type,activities=activities,market=market_cap,column_names=show_df.columns.values, row_data=list(show_df.values.tolist()), zip=zip)
 
 @app.after_request
 def add_header(response):
@@ -464,25 +469,4 @@ def add_header(response):
     return response
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=8000)
-
-# app = Flask(__name__)
-#
-# @app.route('/', methods=['post', 'get'])
-# def login():
-#     message = ''
-#     if request.method == 'POST':
-#         username = request.form.get('username')  # access the data inside
-#         password = request.form.get('password')
-#
-#         if username == 'root' and password == 'pass':
-#             message = "Correct username and password"
-#         else:
-#             message = "Wrong username or password"
-#
-#     return render_template('pred.html', message=message)
-#
-#
-# # main driver function
-# if __name__ == '__main__':
-#     app.run()
+    app.run(host='0.0.0.0',port=80)

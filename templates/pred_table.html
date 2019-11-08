@@ -1,17 +1,4 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
 
-{% for table in tables %}
-            {{titles[loop.index]}}
-            {{ table|safe }}
-{% endfor %}
-</body>
-</html> -->
 <!DOCTYPE html>
 <html>
 
@@ -44,11 +31,106 @@
   background-color: #4CAF50;
   color: white;
 }
+
+input#sub{
+/* background-image:url(../static/button.png); */
+background-repeat:no-repeat;
+background-position:6px;
+border:1px solid #DADADA;
+margin-top:10px;
+margin-bottom:10px;
+padding-left:15px;
+width:100px;
+height:32px;
+font-size:14px;
+box-shadow:0 0 10px;
+-webkit-box-shadow:0 0 10px;
+/* For I.E */
+-moz-box-shadow:0 0 10px;
+/* For Mozilla Web Browser */
+border-radius:5px;
+-webkit-border-radius:5px;
+/* For I.E */
+-moz-border-radius:5px
+/* For Mozilla Web Browser */
+}
+
+input#down{
+/* background-image:url(../static/button.png); */
+background-repeat:no-repeat;
+background-position:6px;
+border:1px solid #DADADA;
+margin-top:10px;
+margin-bottom:10px;
+padding-left:15px;
+width:150px;
+height:32px;
+font-size:14px;
+box-shadow:0 0 10px;
+-webkit-box-shadow:0 0 10px;
+/* For I.E */
+-moz-box-shadow:0 0 10px;
+/* For Mozilla Web Browser */
+border-radius:5px;
+-webkit-border-radius:5px;
+/* For I.E */
+-moz-border-radius:5px
+/* For Mozilla Web Browser */
+}
+
+select#act{
+/* background-image:url(../static/button.png); */
+background-repeat:no-repeat;
+background-position:6px;
+border:1px solid #DADADA;
+margin-top:10px;
+margin-bottom:10px;
+padding-left:15px;
+width:100px;
+height:32px;
+font-size:14px;
+box-shadow:0 0 10px;
+-webkit-box-shadow:0 0 10px;
+/* For I.E */
+-moz-box-shadow:0 0 10px;
+/* For Mozilla Web Browser */
+border-radius:5px;
+-webkit-border-radius:5px;
+/* For I.E */
+-moz-border-radius:5px
+/* For Mozilla Web Browser */
+}
+
+select#asc{
+/* background-image:url(../static/button.png); */
+background-repeat:no-repeat;
+background-position:6px;
+border:1px solid #DADADA;
+margin-top:10px;
+margin-bottom:10px;
+padding-left:15px;
+width:150px;
+height:32px;
+font-size:14px;
+box-shadow:0 0 10px;
+-webkit-box-shadow:0 0 10px;
+/* For I.E */
+-moz-box-shadow:0 0 10px;
+/* For Mozilla Web Browser */
+border-radius:5px;
+-webkit-border-radius:5px;
+/* For I.E */
+-moz-border-radius:5px
+/* For Mozilla Web Browser */
+}
+
+
+
 </style>
 </head>
 
 <body>
-<h1>Salary Ceiling : {{market}}</h1>
+<h1>Salary Ceiling : {{market}}{{year}}  </h1>
 
 <!-- <div class="image123">
     <div class="imgContainer">
@@ -82,20 +164,22 @@
 
 <form method="post">
   <label>
-    <div>Sort By</div>
-    <select name="activity">
+    <select id='act' name="activity">
       {% for activity in activities %}
           <option value="{{ activity }}">{{ activity }}</option>
       {% endfor %}
     </select>
-    <select name="type">
+    <select id='asc' name="type">
       {% for type in type %}
           <option value="{{ type }}">{{ type }}</option>
       {% endfor %}
     </select>
   </label>
-  <input type="submit" name='sort' value='Sort'>
-  <input type="submit" name='download' value='Download as CSV'>
+  <input id="sub" type="submit" name='sort' value='Sort'>
+  <input id="down" type="submit" name='down' value='Download CSV'>
+  <!-- <a href="/static/data_csv.csv" download>
+    <img src="/static/download.png" alt="Downlod as CSV"> -->
+  </a>
 </form>
 </div>
 
