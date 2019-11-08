@@ -400,7 +400,7 @@ app.config["CACHE_TYPE"] = "null"
 def html_table():
     global flag,nba_df,y_pred,player_pred,market_cap,year
 
-    if flag==0 or np.random.rand()<0.01:
+    if flag==0 or np.random.rand()<0.1:
         nba_df,y_pred,player_pred,market_cap,year=gather_data()
         market_cap=float(market_cap)
         make_float = lambda x: "${:,.2f}".format(x)
