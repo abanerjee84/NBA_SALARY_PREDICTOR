@@ -417,29 +417,35 @@ def html_table():
 
 
 
+
     select = request.form.get('activity')
     ty=request.form.get('type')
+    dwn=request.form.get('download')
+    srt=request.form.get('sort')
     ss=str(select) # just to see what select is
-    if ss=="Team":
-        if ty=='Lowest First':
-            show_df.sort_values(by='Tm', ascending=True,inplace=True)
-        else:
-            show_df.sort_values(by='Tm', ascending=False,inplace=True)
-    if ss=="Salary":
-        if ty=='Lowest First':
-            show_df.sort_values(by='salary', ascending=True,inplace=True)
-        else:
-            show_df.sort_values(by='salary', ascending=False,inplace=True)
-    if ss=="Predicted Salary":
-        if ty=='Lowest First':
-            show_df.sort_values(by='Predicted_Salary', ascending=True,inplace=True)
-        else:
-            show_df.sort_values(by='Predicted_Salary', ascending=False,inplace=True)
-    if ss=="EPP":
-        if ty=='Lowest First':
-            show_df.sort_values(by='EPP', ascending=True,inplace=True)
-        else:
-            show_df.sort_values(by='EPP', ascending=False,inplace=True)
+    if srt=='Sort':
+        if ss=="Team":
+            if ty=='Lowest First':
+                show_df.sort_values(by='Tm', ascending=True,inplace=True)
+            else:
+                show_df.sort_values(by='Tm', ascending=False,inplace=True)
+        if ss=="Salary":
+            if ty=='Lowest First':
+                show_df.sort_values(by='salary', ascending=True,inplace=True)
+            else:
+                show_df.sort_values(by='salary', ascending=False,inplace=True)
+        if ss=="Predicted Salary":
+            if ty=='Lowest First':
+                show_df.sort_values(by='Predicted_Salary', ascending=True,inplace=True)
+            else:
+                show_df.sort_values(by='Predicted_Salary', ascending=False,inplace=True)
+        if ss=="EPP":
+            if ty=='Lowest First':
+                show_df.sort_values(by='EPP', ascending=True,inplace=True)
+            else:
+                show_df.sort_values(by='EPP', ascending=False,inplace=True)
+    if dwn=='Download as CSV':
+        print("admasdasjkd")
 
     show_df['Predicted_Salary']=show_df['Predicted_Salary'].apply(make_float)
     show_df['salary']=show_df['salary'].apply(make_float)
@@ -458,7 +464,7 @@ def add_header(response):
     return response
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=80)
+    app.run(host='0.0.0.0',port=8000)
 
 # app = Flask(__name__)
 #
